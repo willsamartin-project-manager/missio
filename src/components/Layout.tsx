@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, Settings, Users, Users2, Church, PlusCircle, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, Settings, Users, Users2, Church, PlusCircle, BarChart3, Menu, X, LogOut } from 'lucide-react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { cn } from '../lib/utils';
 
 const Layout = () => {
     const location = useLocation();
-    const { user, isAdmin } = useAuth();
+    const { user, isAdmin, signOut } = useAuth();
     const [pendingCount, setPendingCount] = useState(0);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Initial fetch of pending approvals
     useEffect(() => {
@@ -109,14 +111,73 @@ const Layout = () => {
                 </div>
             </aside>
 
-            {/* Mobile Header (visible only on small screens) */}
-            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 flex items-center px-4 z-50 justify-between">
-                <div className="flex items-center">
-                    <Church className="text-indigo-600 mr-2" />
-                    <span className="font-bold text-lg">Missio</span>
+            {/* Mobile Header */}
+            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 flex items-center px-4 z-50 justify-between shadow-sm">
+                <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        <Menu className="h-6 w-6 text-slate-700" />
+                    </Button>
+                    <div className="flex items-center">
+                        <Church className="text-indigo-600 mr-2" size={20} />
+                        <span className="font-bold text-lg text-slate-900">Missio</span>
+                    </div>
                 </div>
-                <span className="text-xs text-slate-500">{user?.email}</span>
+                <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs ring-2 ring-white shadow-sm">
+                    {user?.email?.substring(0, 2).toUpperCase()}
+                </div>
             </div>
+
+            {/* Mobile Menu Overlay */}
+            {isMobileMenuOpen && (
+                <div className="fixed inset-0 z-40 md:hidden">
+                    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
+                    <nav className="fixed top-0 bottom-0 left-0 w-[280px] bg-white shadow-xl flex flex-col p-4 animate-in slide-in-from-left duration-300">
+                        <div className="flex items-center justify-between mb-8 px-2">
+                            <span className="font-bold text-xl text-slate-900">Menu</span>
+                            <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
+                                <X className="h-5 w-5 text-slate-500" />
+                            </Button>
+                        </div>
+
+                        <div className="space-y-1 flex-1">
+                            {navItems.map((item) => {
+                                const isActive = location.pathname === item.path;
+                                const Icon = item.icon;
+                                return (
+                                    <Link
+                                        key={item.path}
+                                        to={item.path}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className={cn(
+                                            "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                                            isActive
+                                                ? "bg-indigo-50 text-indigo-700"
+                                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                        )}
+                                    >
+                                        <Icon size={20} className={cn(isActive ? "text-indigo-600" : "text-slate-400")} />
+                                        {item.label}
+                                        {item.alert && (
+                                            <span className="ml-auto flex h-2 w-2 rounded-full bg-red-500" />
+                                        )}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+
+                        <div className="border-t border-slate-100 pt-4 mt-auto">
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 gap-3"
+                                onClick={() => signOut()}
+                            >
+                                <LogOut size={20} />
+                                Sair
+                            </Button>
+                        </div>
+                    </nav>
+                </div>
+            )}
 
             {/* Main Content */}
             <main className="flex-1 overflow-auto md:p-8 p-4 pt-20 md:pt-8">

@@ -125,7 +125,7 @@ export default function UsersList() {
                             <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
                         </div>
                     ) : (
-                        <div className="rounded-md border">
+                        <div className="rounded-md border overflow-x-auto">
                             <table className="w-full text-sm text-left">
                                 <thead className="bg-slate-50 border-b">
                                     <tr>
