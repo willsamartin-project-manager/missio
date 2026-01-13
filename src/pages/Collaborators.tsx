@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
-import { Trash2, Plus, Loader2, Users, UserPlus, Shield } from 'lucide-react';
+import { Trash2, Plus, Loader2, Users, UserPlus } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Collaborators() {
@@ -14,7 +14,6 @@ export default function Collaborators() {
     const { congregations } = useCongregations();
     const { isAdmin, profile } = useAuth(); // Get profile to check congregation
 
-    const [searchTerm, setSearchTerm] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
@@ -75,10 +74,10 @@ export default function Collaborators() {
 
     // Filter collaborators list
     const filteredCollaborators = collaborators.filter(collab => {
-        const matchesSearch = collab.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (collab.contact && collab.contact.includes(searchTerm));
+        // const matchesSearch = collab.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        //     (collab.contact && collab.contact.includes(searchTerm));
 
-        if (!matchesSearch) return false;
+        // if (!matchesSearch) return false;
 
         if (isAdmin) return true;
 

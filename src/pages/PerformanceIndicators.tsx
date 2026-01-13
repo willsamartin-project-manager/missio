@@ -1,10 +1,10 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useEvents } from '../hooks/useEvents';
 import { useCollaborators } from '../hooks/useCollaborators';
 import { useCongregations } from '../hooks/useCongregations';
 import { useAuth } from '../contexts/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { BarChart3, Users, Target, CalendarDays, TrendingUp, Shield, Loader2 } from 'lucide-react';
+import { Users, Target, CalendarDays, TrendingUp, Shield, Loader2 } from 'lucide-react';
 
 export default function PerformanceIndicators() {
     const { events, loading: loadingEvents } = useEvents();
@@ -171,7 +171,7 @@ export default function PerformanceIndicators() {
                     </CardHeader>
                     <CardContent className="pt-4">
                         <div className="space-y-4">
-                            {eventsByCongregation.map((item, index) => (
+                            {eventsByCongregation.map((item) => (
                                 <div key={item.name} className="space-y-1">
                                     <div className="flex justify-between text-sm font-medium">
                                         <span className="truncate max-w-[180px]" title={item.name}>{item.name}</span>

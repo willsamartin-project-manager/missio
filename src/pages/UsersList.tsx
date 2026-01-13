@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
-import { Users, Shield, CheckCircle, XCircle, Loader2, Trash2, UserCog } from 'lucide-react';
+import { Users, Shield, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 
 interface Profile {

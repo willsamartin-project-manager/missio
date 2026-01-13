@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import { LayoutDashboard, Settings, Users, Users2, Church, PlusCircle, BarChart3 } from 'lucide-react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { cn } from '../lib/utils';
 
 const Layout = () => {
-    const navigate = useNavigate();
     const location = useLocation();
-    const { signOut, user, isAdmin } = useAuth();
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { user, isAdmin } = useAuth();
     const [pendingCount, setPendingCount] = useState(0);
 
     // Initial fetch of pending approvals
