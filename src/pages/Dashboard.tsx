@@ -144,9 +144,9 @@ const Dashboard = () => {
                             <Card key={event.id} className="hover:shadow-md transition-shadow duration-200 border-l-4 border-l-indigo-500">
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
-                                        <div>
+                                        <div className="flex-1 min-w-0 pr-2">
                                             <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-2 py-1 rounded-full">{event.why}</span>
-                                            <CardTitle className="mt-3 text-lg leading-tight text-slate-900">{event.what}</CardTitle>
+                                            <CardTitle className="mt-3 text-lg leading-tight text-slate-900 break-words">{event.what}</CardTitle>
                                         </div>
                                         <div className="flex gap-1 -mr-2 -mt-2">
                                             <Link to={`/edit-event/${event.id}`}>
@@ -182,13 +182,13 @@ const Dashboard = () => {
                                                 <span>{new Date(event.when).toLocaleString()}</span>
                                             </div>
 
-                                            <div className="flex items-center gap-2">
-                                                <Home size={14} className="text-slate-400" />
+                                            <div className="flex items-center gap-2 min-w-0">
+                                                <Home size={14} className="text-slate-400 shrink-0" />
                                                 <span className="truncate">{event.congregation || 'Não informada'}</span>
                                             </div>
 
-                                            <div className="flex items-center gap-2" title="Responsável / Equipe">
-                                                <Users size={14} className="text-slate-400" />
+                                            <div className="flex items-center gap-2 min-w-0" title="Responsável / Equipe">
+                                                <Users size={14} className="text-slate-400 shrink-0" />
                                                 <span className="truncate font-medium text-slate-700">{event.who}</span>
                                             </div>
                                         </div>
