@@ -127,22 +127,33 @@ const Reports = () => {
                             <table className="w-full text-sm text-left">
                                 <thead className="bg-slate-50 text-slate-600 font-medium border-b border-slate-200 print:bg-slate-100">
                                     <tr>
+                                        <th className="px-6 py-3 w-10 print:hidden"></th>
                                         <th className="px-6 py-3 print:px-2">Data / Local</th>
+                                        <th className="px-6 py-3 print:px-2">Congregação</th>
                                         <th className="px-6 py-3 print:px-2">Evento</th>
                                         <th className="px-6 py-3 print:px-2">Responsável</th>
                                         <th className="px-6 py-3 text-center print:px-2">Voluntários</th>
                                         <th className="px-6 py-3 text-center print:px-2">Decisões</th>
-                                        <th className="px-6 py-3 w-10 print:hidden"></th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
                                     {filteredEvents.map((event) => (
                                         <tr key={event.id} className="hover:bg-slate-50 print:hover:bg-transparent">
+                                            <td className="px-6 py-4 text-center print:hidden">
+                                                <Link to={`/reports/${event.id}`}>
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50" title="Visualizar Relatório Completo">
+                                                        <FileText size={16} />
+                                                    </Button>
+                                                </Link>
+                                            </td>
                                             <td className="px-6 py-4 print:px-2">
                                                 <div className="font-medium text-slate-900">
                                                     {new Date(event.when).toLocaleDateString()}
                                                 </div>
                                                 <div className="text-xs text-slate-500">{event.where}</div>
+                                            </td>
+                                            <td className="px-6 py-4 text-slate-600 print:px-2">
+                                                {event.congregation || '-'}
                                             </td>
                                             <td className="px-6 py-4 print:px-2">
                                                 <div className="font-medium text-slate-900">{event.what}</div>
@@ -162,13 +173,6 @@ const Reports = () => {
                                                 ) : (
                                                     <span className="text-slate-400">-</span>
                                                 )}
-                                            </td>
-                                            <td className="px-6 py-4 text-center print:hidden">
-                                                <Link to={`/reports/${event.id}`}>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50" title="Visualizar Relatório Completo">
-                                                        <FileText size={16} />
-                                                    </Button>
-                                                </Link>
                                             </td>
                                         </tr>
                                     ))}
