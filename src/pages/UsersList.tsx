@@ -5,7 +5,7 @@ import { useCongregations } from '../hooks/useCongregations';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
-import { Users, Shield, CheckCircle, XCircle, Loader2, Pencil } from 'lucide-react';
+import { Users, Shield, CheckCircle, XCircle, Loader2, Pencil, Key } from 'lucide-react';
 
 
 interface Profile {
@@ -74,6 +74,24 @@ export default function UsersList() {
         } catch (error) {
             console.error('Error updating status:', error);
             alert('Erro ao atualizar status.');
+        } finally {
+            setActionLoading(null);
+        }
+    };
+
+    const handleResetPassword = async (email: string) => {
+        if (!confirm(`Tem certeza que deseja enviar um email de redefinição de senha para ${email}?`)) return;
+
+        setActionLoading(email); // Use email as loading key for this action
+        try {
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: `${window.location.origin}/update-password`,
+            });
+            if (error) throw error;
+            alert(`Email de redefinição enviado com sucesso para ${email}`);
+        } catch (error: any) {
+            console.error('Error sending reset email:', error);
+            alert(`Erro ao enviar email: ${error.message}`);
         } finally {
             setActionLoading(null);
         }
@@ -214,6 +232,18 @@ export default function UsersList() {
                                             </td>
                                             <td className="p-4 text-right">
                                                 <div className="flex justify-end gap-2">
+                                                    {/* Reset Password Button */}
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={() => handleResetPassword(user.email)}
+                                                        disabled={actionLoading === user.email}
+                                                        className="text-slate-500 hover:text-amber-600 hover:bg-amber-50"
+                                                        title="Redefinir Senha"
+                                                    >
+                                                        {actionLoading === user.email ? <Loader2 className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
+                                                    </Button>
+
                                                     {/* Edit Button */}
                                                     <Button
                                                         variant="ghost"

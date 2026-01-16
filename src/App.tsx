@@ -6,6 +6,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PendingApproval from './pages/PendingApproval';
+import UpdatePassword from './pages/UpdatePassword';
 import TestPlayground from './pages/TestPlayground'; // Import TestPlayground
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
@@ -34,6 +35,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/pending-approval" element={<PendingApproval />} />
+            <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/test" element={<TestPlayground />} /> {/* Test Route */}
 
             {/* Protected Routes */}
