@@ -1,5 +1,7 @@
+```javascript
 import { useState, useMemo } from 'react';
 import { useEvents } from '../hooks/useEvents';
+import { useAuth } from '../contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { FileText, Printer, Filter, Calendar } from 'lucide-react';
@@ -8,11 +10,12 @@ import { Link } from 'react-router-dom';
 
 const Reports = () => {
     const { events, loading } = useEvents();
+    const { isAdmin, profile } = useAuth();
 
     // Default to current month/year
     const [selectedMonth, setSelectedMonth] = useState(() => {
         const now = new Date();
-        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        return `${ now.getFullYear() } -${ String(now.getMonth() + 1).padStart(2, '0') } `;
     });
 
     const filteredEvents = useMemo(() => {
@@ -23,10 +26,15 @@ const Reports = () => {
         return events.filter(event => {
             if (event.status !== 'completed' || !event.result) return false;
 
+            // Access Control: Non-admins can only see their congregation's events
+            if (!isAdmin && event.congregation !== profile?.congregation) {
+                return false;
+            }
+
             const eventDate = new Date(event.when);
             return eventDate.getMonth() + 1 === month && eventDate.getFullYear() === year;
         }).sort((a, b) => new Date(a.when).getTime() - new Date(b.when).getTime());
-    }, [events, selectedMonth]);
+    }, [events, selectedMonth, isAdmin, profile]);
 
     const totals = useMemo(() => {
         return filteredEvents.reduce((acc, event) => ({
@@ -140,7 +148,7 @@ const Reports = () => {
                                     {filteredEvents.map((event) => (
                                         <tr key={event.id} className="hover:bg-slate-50 print:hover:bg-transparent">
                                             <td className="px-6 py-4 text-center print:hidden">
-                                                <Link to={`/reports/${event.id}`}>
+                                                <Link to={`/ reports / ${ event.id } `}>
                                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50" title="Visualizar Relatório Completo">
                                                         <FileText size={16} />
                                                     </Button>
@@ -189,25 +197,25 @@ const Reports = () => {
             </Card>
 
             <style>{`
-                @media print {
-                    @page {
-                        margin: 1.5cm;
-                        size: A4;
-                    }
+@media print {
+    @page {
+        margin: 1.5cm;
+        size: A4;
+    }
                     body {
-                        background: white;
-                    }
-                    /* Hide sidebar and other layout elements if they are not properly hidden by print:hidden utility */
-                    aside, nav, header, .fixed, button {
-                        display: none !important;
-                    } 
+        background: white;
+    }
+    /* Hide sidebar and other layout elements if they are not properly hidden by print:hidden utility */
+    aside, nav, header, .fixed, button {
+        display: none!important;
+    } 
                     main {
-                        padding: 0 !important;
-                        margin: 0 !important;
-                        overflow: visible !important;
-                    }
-                }
-            `}</style>
+        padding: 0!important;
+        margin: 0!important;
+        overflow: visible!important;
+    }
+}
+`}</style>
         </div>
     );
 };

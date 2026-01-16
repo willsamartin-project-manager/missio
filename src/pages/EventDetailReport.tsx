@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useEvents, type Event as AppEvent } from '../hooks/useEvents';
+import { useAuth } from '../contexts/AuthContext';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Loader2, Printer, ArrowLeft, Calendar, MapPin, Users, CheckCircle, MessageSquare, User } from 'lucide-react';
+import { Loader2, Printer, ArrowLeft, Calendar, MapPin, Users, CheckCircle, MessageSquare, User, ShieldAlert } from 'lucide-react';
 
 const EventDetailReport = () => {
     const { eventId } = useParams<{ eventId: string }>();
     const navigate = useNavigate();
     const { events, loading } = useEvents();
+    const { isAdmin, profile } = useAuth();
     const [event, setEvent] = useState<AppEvent | null>(null);
 
     useEffect(() => {
@@ -36,6 +38,22 @@ const EventDetailReport = () => {
         return (
             <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
                 <h2 className="text-2xl font-bold text-slate-900">Evento não encontrado</h2>
+                <Button variant="outline" onClick={() => navigate('/reports')}>
+                    Voltar para Relatórios
+                </Button>
+            </div>
+        );
+    }
+
+    // Access Control Check
+    if (!isAdmin && event.congregation !== profile?.congregation) {
+        return (
+            <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
+                <ShieldAlert className="h-16 w-16 text-red-500" />
+                <h2 className="text-2xl font-bold text-slate-900">Acesso Negado</h2>
+                <p className="text-slate-500 max-w-md text-center">
+                    Você não tem permissão para visualizar o relatório desta congregação.
+                </p>
                 <Button variant="outline" onClick={() => navigate('/reports')}>
                     Voltar para Relatórios
                 </Button>
