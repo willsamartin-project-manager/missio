@@ -140,7 +140,7 @@ export default function Register() {
                         )}
                         <Button type="submit" className="w-full" disabled={loading || loadingCongs}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Cadastrar
+                            <span>Cadastrar</span>
                         </Button>
                         <div className="text-center text-sm text-slate-500 mt-4">
                             Já tem uma conta? <Link to="/login" className="text-indigo-600 hover:underline">Faça login</Link>
