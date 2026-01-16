@@ -15,16 +15,24 @@ export default function UpdatePassword() {
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
     useEffect(() => {
-        // Build mechanism to check if we have a valid session for recovery
-        const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                // Ideally, Supabase magic link should have set the session handling the #access_token fragment
-                // If not, we might be lost or user navigated here directly without a reset link
-                setMessage({ type: 'error', text: 'Sessão inválida ou expirada. Solicite uma nova redefinição de senha.' });
+        // Listen for auth state changes, especially PASSWORD_RECOVERY
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+            if (event === 'PASSWORD_RECOVERY') {
+                // Determine if we need to do anything specifically, mostly the session is set
+                console.log('Password recovery event');
             }
+
+            if (!session) {
+                // Wait a bit to see if session is established from URL
+                setMessage({ type: 'error', text: 'Aguardando validação da sessão...' });
+            } else {
+                setMessage(null);
+            }
+        });
+
+        return () => {
+            subscription.unsubscribe();
         };
-        checkSession();
     }, []);
 
     const handleUpdatePassword = async (e: React.FormEvent) => {
