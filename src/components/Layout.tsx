@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, Settings, Users, Users2, Church, PlusCircle, BarChart3, Menu, X, LogOut } from 'lucide-react';
+import { LayoutDashboard, Settings, Users, Users2, Church, PlusCircle, BarChart3, Menu, X, LogOut, FileText } from 'lucide-react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
@@ -44,6 +44,7 @@ const Layout = () => {
 
     const navItems: { icon: any; label: string; path: string; alert?: boolean }[] = [
         { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+        { icon: FileText, label: 'Relatórios', path: '/reports' },
         { icon: Users, label: 'Colaboradores', path: '/collaborators' },
         { icon: PlusCircle, label: 'Novo Evento', path: '/new-event' },
     ];
