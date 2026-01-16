@@ -59,29 +59,52 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         let mounted = true;
 
+        async function bootstrap() {
+            try {
+                // 1. Get initial session
+                const { data: { session } } = await supabase.auth.getSession();
+
+                if (!mounted) return;
+
+                if (session?.user) {
+                    setSession(session);
+                    setUser(session.user);
+                    // Fetch profile for authenticated user
+                    await fetchProfile(session.user.id);
+                } else {
+                    setSession(null);
+                    setUser(null);
+                    setProfile(null);
+                }
+            } catch (error) {
+                console.error('Auth bootstrap error:', error);
+            } finally {
+                if (mounted) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        bootstrap();
+
+        // 2. Listen for auth changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
             if (!mounted) return;
 
-            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
-                setSession(session);
-                setUser(session?.user ?? null);
+            // Update session state
+            setSession(session);
+            setUser(session?.user ?? null);
 
-                if (session?.user) {
-                    try {
-                        await fetchProfile(session.user.id);
-                    } catch (error) {
-                        console.error('Error fetching profile:', error);
-                    }
-                } else {
-                    setProfile(null);
-                }
-                setLoading(false);
+            if (event === 'SIGNED_IN' && session?.user) {
+                // If we just signed in, we need the profile
+                // We don't set loading=true here to avoid UI flash, or we could if we want to block interaction
+                await fetchProfile(session.user.id);
             } else if (event === 'SIGNED_OUT') {
-                setSession(null);
-                setUser(null);
                 setProfile(null);
-                setLoading(false);
             }
+
+            // Ensure loading is false after any auth event processing
+            setLoading(false);
         });
 
         return () => {
