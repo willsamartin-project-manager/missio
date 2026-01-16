@@ -16,6 +16,7 @@ import Collaborators from './pages/Collaborators';
 import Settings from './pages/Settings';
 import UsersList from './pages/UsersList';
 import Reports from './pages/Reports';
+import EventDetailReport from './pages/EventDetailReport';
 import PerformanceIndicators from './pages/PerformanceIndicators';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
@@ -41,6 +42,7 @@ function App() {
                 <Route index element={<Navigate to="/dashboard" replace />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="reports" element={<Reports />} />
+                <Route path="reports/:eventId" element={<EventDetailReport />} />
                 <Route path="new-event" element={<NewEvent />} />
                 <Route path="edit-event/:id" element={<EditEvent />} />
                 <Route path="report/:eventId" element={<EventReport />} />

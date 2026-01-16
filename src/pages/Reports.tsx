@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../co
 import { Button } from '../components/ui/button';
 import { FileText, Printer, Filter, Calendar } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Reports = () => {
     const { events, loading } = useEvents();
@@ -131,6 +132,7 @@ const Reports = () => {
                                         <th className="px-6 py-3 print:px-2">Responsável</th>
                                         <th className="px-6 py-3 text-center print:px-2">Voluntários</th>
                                         <th className="px-6 py-3 text-center print:px-2">Decisões</th>
+                                        <th className="px-6 py-3 w-10 print:hidden"></th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
@@ -160,6 +162,13 @@ const Reports = () => {
                                                 ) : (
                                                     <span className="text-slate-400">-</span>
                                                 )}
+                                            </td>
+                                            <td className="px-6 py-4 text-center print:hidden">
+                                                <Link to={`/reports/${event.id}`}>
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50" title="Visualizar Relatório Completo">
+                                                        <FileText size={16} />
+                                                    </Button>
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}
