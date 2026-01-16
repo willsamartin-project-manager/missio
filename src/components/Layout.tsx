@@ -102,7 +102,15 @@ const Layout = () => {
                     })}
                 </nav>
 
-                <div className="p-4 border-t border-slate-100">
+                <div className="p-4 border-t border-slate-100 space-y-4">
+                    <Button
+                        variant="ghost"
+                        className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 gap-3"
+                        onClick={() => signOut()}
+                    >
+                        <LogOut size={20} />
+                        Sair
+                    </Button>
                     <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-4 text-white shadow-lg shadow-indigo-500/20">
                         <p className="text-xs font-medium opacity-80 mb-1">Assembléia de Deus</p>
                         <p className="text-sm font-bold">Ministério do Belém</p>
