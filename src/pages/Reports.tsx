@@ -1,4 +1,4 @@
-```javascript
+
 import { useState, useMemo } from 'react';
 import { useEvents } from '../hooks/useEvents';
 import { useAuth } from '../contexts/AuthContext';
@@ -15,7 +15,7 @@ const Reports = () => {
     // Default to current month/year
     const [selectedMonth, setSelectedMonth] = useState(() => {
         const now = new Date();
-        return `${ now.getFullYear() } -${ String(now.getMonth() + 1).padStart(2, '0') } `;
+        return `${now.getFullYear()} -${String(now.getMonth() + 1).padStart(2, '0')} `;
     });
 
     const filteredEvents = useMemo(() => {
@@ -148,7 +148,7 @@ const Reports = () => {
                                     {filteredEvents.map((event) => (
                                         <tr key={event.id} className="hover:bg-slate-50 print:hover:bg-transparent">
                                             <td className="px-6 py-4 text-center print:hidden">
-                                                <Link to={`/ reports / ${ event.id } `}>
+                                                <Link to={`/ reports / ${event.id} `}>
                                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50" title="Visualizar Relatório Completo">
                                                         <FileText size={16} />
                                                     </Button>
