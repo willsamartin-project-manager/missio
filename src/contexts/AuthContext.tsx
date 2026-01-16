@@ -59,42 +59,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         let mounted = true;
 
-        const initSession = async () => {
-            try {
-                const { data: { session } } = await supabase.auth.getSession();
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+            if (!mounted) return;
 
-                if (mounted) {
-                    setSession(session);
-                    setUser(session?.user ?? null);
-
-                    if (session?.user) {
-                        await fetchProfile(session.user.id);
-                    }
-                }
-            } catch (error) {
-                console.error('Error initializing session:', error);
-            } finally {
-                if (mounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        initSession();
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-            if (mounted) {
+            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
                 setSession(session);
                 setUser(session?.user ?? null);
 
                 if (session?.user) {
-                    setLoading(true); // Temporarily set loading true while fetching profile on change
-                    await fetchProfile(session.user.id);
-                    setLoading(false);
+                    try {
+                        await fetchProfile(session.user.id);
+                    } catch (error) {
+                        console.error('Error fetching profile:', error);
+                    }
                 } else {
                     setProfile(null);
-                    setLoading(false);
                 }
+                setLoading(false);
+            } else if (event === 'SIGNED_OUT') {
+                setSession(null);
+                setUser(null);
+                setProfile(null);
+                setLoading(false);
             }
         });
 
