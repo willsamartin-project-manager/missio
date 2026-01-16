@@ -149,7 +149,7 @@ const Dashboard = () => {
                                             <CardTitle className="mt-3 text-lg leading-tight text-slate-900 break-words">{event.what}</CardTitle>
                                         </div>
                                         <div className="flex gap-1 shrink-0">
-                                            <Link to={`/edit-event/${event.id}`}>
+                                            <Link to={`/edit-event/${event.id}`} className="flex">
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
@@ -201,14 +201,14 @@ const Dashboard = () => {
                                                         <CheckCircle size={16} />
                                                         Relatório Completo
                                                     </div>
-                                                    <Link to={`/report/${event.id}`}>
+                                                    <Link to={`/report/${event.id}`} className="w-full block">
                                                         <Button variant="ghost" size="sm" className="w-full text-slate-500 hover:text-slate-900 border border-transparent hover:border-slate-200 whitespace-normal h-auto py-2">
                                                             Editar Relatório
                                                         </Button>
                                                     </Link>
                                                 </div>
                                             ) : (
-                                                <Link to={`/report/${event.id}`}>
+                                                <Link to={`/report/${event.id}`} className="w-full block">
                                                     <Button variant="outline" size="sm" className="w-full border-indigo-200 text-indigo-700 hover:bg-indigo-50 whitespace-normal h-auto py-2">
                                                         Preencher Relatório
                                                     </Button>
