@@ -97,12 +97,22 @@ const Dashboard = () => {
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-lg font-bold truncate">
-                            {filteredEvents.length > 0 ? new Date(filteredEvents[0].when).toLocaleDateString() : 'N/A'}
-                        </div>
-                        <p className="text-xs text-muted-foreground text-ellipsis overflow-hidden whitespace-nowrap">
-                            {filteredEvents.length > 0 ? filteredEvents[0].where : 'Nenhum agendado'}
-                        </p>
+                        {(() => {
+                            const nextEvent = events
+                                .filter(e => e.status !== 'completed')
+                                .sort((a, b) => new Date(a.when).getTime() - new Date(b.when).getTime())[0];
+
+                            return (
+                                <>
+                                    <div className="text-lg font-bold truncate">
+                                        {nextEvent ? new Date(nextEvent.when).toLocaleDateString() : 'N/A'}
+                                    </div>
+                                    <p className="text-xs text-muted-foreground text-ellipsis overflow-hidden whitespace-nowrap">
+                                        {nextEvent ? nextEvent.where : 'Nenhum agendado'}
+                                    </p>
+                                </>
+                            );
+                        })()}
                     </CardContent>
                 </Card>
             </div>
