@@ -170,8 +170,9 @@ const Dashboard = () => {
                                             </Button>
                                         </div>
                                     </div>
-                                    <CardDescription className="flex items-center gap-2 mt-2">
-                                        <MapPin size={14} /> {event.where}
+                                    <CardDescription className="flex items-start gap-2 mt-2">
+                                        <MapPin size={14} className="shrink-0 mt-0.5" />
+                                        <span className="break-words min-w-0">{event.where}</span>
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
