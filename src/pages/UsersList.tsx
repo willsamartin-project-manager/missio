@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
+import { useCongregations } from '../hooks/useCongregations';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
@@ -20,6 +21,7 @@ interface Profile {
 
 export default function UsersList() {
     const { isAdmin, user: currentUser } = useAuth();
+    const { congregations } = useCongregations();
     const [users, setUsers] = useState<Profile[]>([]);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -281,13 +283,18 @@ export default function UsersList() {
 
                             <div>
                                 <label className="text-sm font-medium text-slate-700 mb-1 block">Congregação</label>
-                                <input
-                                    type="text"
+                                <select
                                     value={editForm.congregation}
                                     onChange={(e) => setEditForm({ ...editForm, congregation: e.target.value })}
-                                    className="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                    placeholder="Ex: Sede, Congregação A..."
-                                />
+                                    className="flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                >
+                                    <option value="">Selecione...</option>
+                                    {congregations.map(cong => (
+                                        <option key={cong.id} value={cong.name}>
+                                            {cong.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div>
