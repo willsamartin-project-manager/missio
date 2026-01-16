@@ -57,32 +57,51 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     useEffect(() => {
-        // Check active session
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setSession(session);
-            setUser(session?.user ?? null);
-            if (session?.user) {
-                fetchProfile(session.user.id);
-                // Update last_sign_in_at
-                supabase.from('profiles').update({ last_sign_in_at: new Date().toISOString() }).eq('id', session.user.id).then();
-            } else {
-                setLoading(false);
+        let mounted = true;
+
+        const initSession = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+
+                if (mounted) {
+                    setSession(session);
+                    setUser(session?.user ?? null);
+
+                    if (session?.user) {
+                        await fetchProfile(session.user.id);
+                    }
+                }
+            } catch (error) {
+                console.error('Error initializing session:', error);
+            } finally {
+                if (mounted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        initSession();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+            if (mounted) {
+                setSession(session);
+                setUser(session?.user ?? null);
+
+                if (session?.user) {
+                    setLoading(true); // Temporarily set loading true while fetching profile on change
+                    await fetchProfile(session.user.id);
+                    setLoading(false);
+                } else {
+                    setProfile(null);
+                    setLoading(false);
+                }
             }
         });
 
-        // Listen for changes
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setSession(session);
-            setUser(session?.user ?? null);
-            if (session?.user) {
-                fetchProfile(session.user.id).then(() => setLoading(false));
-            } else {
-                setProfile(null);
-                setLoading(false);
-            }
-        });
-
-        return () => subscription.unsubscribe();
+        return () => {
+            mounted = false;
+            subscription.unsubscribe();
+        };
     }, []);
 
     const signOut = async () => {

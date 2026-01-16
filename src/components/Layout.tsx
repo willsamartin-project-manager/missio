@@ -180,7 +180,7 @@ const Layout = () => {
             )}
 
             {/* Main Content */}
-            <main className="flex-1 overflow-auto md:p-8 p-4 pt-20 md:pt-8">
+            <main className="flex-1 overflow-auto md:p-8 p-4 pt-[calc(5rem+env(safe-area-inset-top))] md:pt-8 pb-[calc(1rem+env(safe-area-inset-bottom))]">
                 <div className="max-w-5xl mx-auto">
                     <Outlet />
                 </div>
