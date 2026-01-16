@@ -202,14 +202,14 @@ const Dashboard = () => {
                                                         Relatório Completo
                                                     </div>
                                                     <Link to={`/report/${event.id}`}>
-                                                        <Button variant="ghost" size="sm" className="w-full text-slate-500 hover:text-slate-900 border border-transparent hover:border-slate-200">
+                                                        <Button variant="ghost" size="sm" className="w-full text-slate-500 hover:text-slate-900 border border-transparent hover:border-slate-200 whitespace-normal h-auto py-2">
                                                             Editar Relatório
                                                         </Button>
                                                     </Link>
                                                 </div>
                                             ) : (
                                                 <Link to={`/report/${event.id}`}>
-                                                    <Button variant="outline" size="sm" className="w-full border-indigo-200 text-indigo-700 hover:bg-indigo-50">
+                                                    <Button variant="outline" size="sm" className="w-full border-indigo-200 text-indigo-700 hover:bg-indigo-50 whitespace-normal h-auto py-2">
                                                         Preencher Relatório
                                                     </Button>
                                                 </Link>
