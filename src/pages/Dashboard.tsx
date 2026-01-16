@@ -141,14 +141,14 @@ const Dashboard = () => {
                 ) : (
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {filteredEvents.map((event) => (
-                            <Card key={event.id} className="hover:shadow-md transition-shadow duration-200 border-l-4 border-l-indigo-500">
+                            <Card key={event.id} className="hover:shadow-md transition-shadow duration-200 border-l-4 border-l-indigo-500 overflow-hidden">
                                 <CardHeader>
-                                    <div className="flex justify-between items-start">
-                                        <div className="flex-1 min-w-0 pr-2">
+                                    <div className="flex justify-between items-start gap-2">
+                                        <div className="flex-1 min-w-0">
                                             <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-2 py-1 rounded-full">{event.why}</span>
                                             <CardTitle className="mt-3 text-lg leading-tight text-slate-900 break-words">{event.what}</CardTitle>
                                         </div>
-                                        <div className="flex gap-1 -mr-2 -mt-2">
+                                        <div className="flex gap-1 shrink-0">
                                             <Link to={`/edit-event/${event.id}`}>
                                                 <Button
                                                     variant="ghost"
