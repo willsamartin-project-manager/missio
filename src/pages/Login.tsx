@@ -64,6 +64,14 @@ export default function Login() {
                                 required
                             />
                         </div>
+                        <div className="flex justify-end">
+                            <Link
+                                to="/forgot-password"
+                                className="text-sm font-medium text-indigo-600 hover:text-indigo-500 hover:underline"
+                            >
+                                Esqueci minha senha
+                            </Link>
+                        </div>
                         {error && (
                             <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 p-3 rounded-md">
                                 <AlertCircle className="w-4 h-4" />

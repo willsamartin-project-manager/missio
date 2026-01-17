@@ -5,6 +5,7 @@ import { seedAdminUser } from './lib/adminSeeder'; // Import seeder
 import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 import PendingApproval from './pages/PendingApproval';
 import UpdatePassword from './pages/UpdatePassword';
 import TestPlayground from './pages/TestPlayground'; // Import TestPlayground
@@ -34,6 +35,7 @@ function App() {
             {/* Public Routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/pending-approval" element={<PendingApproval />} />
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/test" element={<TestPlayground />} /> {/* Test Route */}
